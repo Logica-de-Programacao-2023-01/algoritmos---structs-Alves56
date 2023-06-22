@@ -1,0 +1,55 @@
+package main
+
+import (
+	"fmt"
+)
+
+type Filme struct {
+	Titulo     string
+	Diretor    string
+	Ano        int
+	Avaliacoes []int
+}
+
+func (f *Filme) AdicionarAvaliacao(avaliacao int) {
+	f.Avaliacoes = append(f.Avaliacoes, avaliacao)
+}
+
+func (f *Filme) RemoverAvaliacao(index int) {
+	if index < 0 || index >= len(f.Avaliacoes) {
+		panic("Índice inválido para remover avaliação")
+	}
+
+	f.Avaliacoes = append(f.Avaliacoes[:index], f.Avaliacoes[index+1:]...)
+}
+
+func (f *Filme) CalcularMediaAvaliacoes() float64 {
+	if len(f.Avaliacoes) == 0 {
+		return 0.0
+	}
+
+	soma := 0
+	for _, avaliacao := range f.Avaliacoes {
+		soma += avaliacao
+	}
+
+	return float64(soma) / float64(len(f.Avaliacoes))
+}
+
+func (f *Filme) ImprimirInformacoes() {
+	fmt.Printf("Título: %s\nDiretor: %s\nAno: %d\nMédia de Avaliações: %.2f\n", f.Titulo, f.Diretor, f.Ano, f.CalcularMediaAvaliacoes())
+}
+
+func main() {
+	filme := Filme{
+		Titulo:     "Interestelar",
+		Diretor:    "Christopher Nolan",
+		Ano:        2014,
+		Avaliacoes: []int{8, 9, 10},
+	}
+
+	filme.AdicionarAvaliacao(7)
+	filme.RemoverAvaliacao(1)
+
+	filme.ImprimirInformacoes()
+}
