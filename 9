@@ -1,0 +1,53 @@
+package main
+
+import (
+	"fmt"
+)
+
+type Aluno struct {
+	Nome  string
+	Idade int
+	Notas []float64
+}
+
+func (a *Aluno) AdicionarNota(nota float64) {
+	a.Notas = append(a.Notas, nota)
+}
+
+func (a *Aluno) RemoverNota(index int) {
+	if index < 0 || index >= len(a.Notas) {
+		panic("Índice inválido para remover nota")
+	}
+
+	a.Notas = append(a.Notas[:index], a.Notas[index+1:]...)
+}
+
+func (a *Aluno) CalcularMedia() float64 {
+	if len(a.Notas) == 0 {
+		return 0.0
+	}
+
+	soma := 0.0
+	for _, nota := range a.Notas {
+		soma += nota
+	}
+
+	return soma / float64(len(a.Notas))
+}
+
+func (a *Aluno) ImprimirInformacoes() {
+	fmt.Printf("Nome: %s\nIdade: %d\nMédia: %.2f\n", a.Nome, a.Idade, a.CalcularMedia())
+}
+
+func main() {
+	aluno := Aluno{
+		Nome:  "João",
+		Idade: 18,
+		Notas: []float64{7.5, 8.0, 9.2},
+	}
+
+	aluno.AdicionarNota(6.8)
+	aluno.RemoverNota(1)
+
+	aluno.ImprimirInformacoes()
+}
